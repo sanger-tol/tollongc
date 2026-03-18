@@ -6,6 +6,7 @@ include { DIGEST_READS   } from '../../../modules/local/digest_reads/main'
 include { MINIMAP2_INDEX } from '../../../modules/nf-core/minimap2/index/main'
 include { MINIMAP2_ALIGN } from '../../../modules/nf-core/minimap2/align/main'
 include { ANNOTATE_FRAG  } from '../../../modules/local/annotate_frag/main'
+include { TO_CONTACTS    } from '../../../modules/local/to_contacts/main'
 
 workflow LONGC {
 
@@ -17,7 +18,7 @@ workflow LONGC {
 
     //
     // Optionally digest reads (split concatemers at restriction sites)
-    // When skip_digest=true, align raw reads directly
+    // When skip_digest=true, align raw reads directly, the output is a BAM file with the original read names
     //
     if (params.skip_digest) {
         ch_reads_for_align = longc_reads
@@ -51,8 +52,14 @@ workflow LONGC {
     ch_align_bam = MINIMAP2_ALIGN.out.bam.join(MINIMAP2_ALIGN.out.index)
     ANNOTATE_FRAG ( ch_align_bam )
 
+    //
+    // Extract pairwise contacts to 4DN pairs format
+    //
+    TO_CONTACTS ( ANNOTATE_FRAG.out.bam )
+
     emit:
     bam            = ANNOTATE_FRAG.out.bam
+    pairs          = TO_CONTACTS.out.pairs
     versions_minimap2_index = MINIMAP2_INDEX.out.versions_minimap2
     versions_minimap2_align = MINIMAP2_ALIGN.out.versions_minimap2
 
