@@ -6,18 +6,63 @@ This document describes the output produced by the pipeline.
 
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
-<!-- TODO nf-core: Write this documentation describing your workflow's output -->
-
 ## Pipeline overview
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
+The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes Long-C/Pore-C data through:
 
+1. **Digest** (optional) — Restriction digest of concatemers
+2. **Align** — Minimap2 alignment
+3. **Annotate** — Fragment annotation with FI, FD, BX tags
+4. **Parse** — pairtools parse2: BAM → pairs
+5. **Restrict** (optional) — pairtools restrict to fragments
+6. **Convert** — pairs → cool, mcool, pretext
 
-- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
+## Output directories
 
+### BAM
 
+<details markdown="1">
+<summary>Output files</summary>
 
+- `bam/` — Annotated BAM with fragment IDs (FI, FD, BX tags), coordinate-sorted and indexed
 
+</details>
+
+### Pairs
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `pairs/` — 4DN pairs format (`.pairs.gz`), restricted or unrestricted depending on `--restrict_fragments`
+
+</details>
+
+### Cool
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `cool/` — Cool contact matrix (single resolution, default 10 kb bins) when `--cool` is true
+
+</details>
+
+### Mcool
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `mcool/` — Multi-resolution cool contact matrix when `--mcool` is true
+
+</details>
+
+### Pretext
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `pretext/` — Pretext format (`.pretext`) for visualization in PretextView when `--pretext` is true
+
+</details>
 
 ### Pipeline information
 

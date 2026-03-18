@@ -3,6 +3,7 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+include { LONGC                  } from '../subworkflows/local/longc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_tollongc_pipeline'
@@ -16,11 +17,19 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_toll
 workflow TOLLONGC {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    reference // channel: tuple(meta, path(fasta))
+    longc_reads // channel: tuple(meta, path(reads))
     main:
 
     ch_versions = Channel.empty()
 
+    //
+    // WORKFLOW: Run pipeline
+    //
+    LONGC (
+        reference,
+        longc_reads
+    )
     //
     // Collate and save software versions
     //
@@ -35,6 +44,11 @@ workflow TOLLONGC {
 
     emit:
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
+    bam            = LONGC.out.bam
+    pairs          = LONGC.out.pairs
+    cool           = LONGC.out.cool
+    mcool          = LONGC.out.mcool
+    pretext        = LONGC.out.pretext
 
 }
 

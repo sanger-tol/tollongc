@@ -13,49 +13,79 @@
 
 ## Introduction
 
-**sanger-tol/tollongc** is a bioinformatics pipeline that ...
+**sanger-tol/tollongc** is a Nextflow pipeline for processing Long-C/Pore-C chromatin conformation capture data from long-read sequencing. It converts raw reads into pairwise genomic contacts and generates contact matrices in multiple formats for downstream analysis and visualization.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+The pipeline:
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/guidelines/graphic_design/workflow_diagrams#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
+- **Digests** concatemer reads at restriction sites (optional) or aligns raw reads directly
+- **Aligns** fragments to a reference genome with minimap2
+- **Annotates** fragments and extracts pairwise contacts using pairtools parse2
+- **Optionally restricts** contacts to restriction fragments (pairtools restrict)
+- **Converts** pairs to cool, mcool, and pretext formats for visualization
+
+### Pipeline overview
+
+1. **Digest** (optional) — Split concatemers at restriction sites (NlaIII, DpnII, etc.)
+2. **Align** — Minimap2 index and alignment
+3. **Annotate** — Group fragments by read, assign fragment IDs
+4. **Parse** — pairtools parse2: BAM → pairs format
+5. **Restrict** (optional) — pairtools restrict: filter to restriction fragments
+6. **Convert** — pairs → cool/mcool (cooler) and pretext (PretextMap)
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
+### Input
 
-First, prepare a samplesheet with your input data that looks as follows:
+Prepare a samplesheet with your input data:
 
 `samplesheet.csv`:
 
 ```csv
 sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
+SAMPLE1,reads1.fastq.gz,
+SAMPLE2,reads2.fastq.gz,
 ```
 
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
+- `sample`: Sample identifier
+- `fastq_1`: Path to FASTQ file (single-end reads)
+- `fastq_2`: Optional, for paired-end (leave empty for Long-C)
 
--->
-
-Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
+### Running the pipeline
 
 ```bash
 nextflow run sanger-tol/tollongc \
-   -profile <docker/singularity/.../institute> \
+   -profile <docker/singularity/conda> \
    --input samplesheet.csv \
    --outdir <OUTDIR>
 ```
+
+### Main parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `--input` | Path to samplesheet CSV | Required |
+| `--outdir` | Output directory | Required |
+| `--skip_digest` | Skip restriction digest, align raw reads | `false` |
+| `--cutter` | Restriction enzyme (NlaIII, DpnII, HindIII, etc.) | `NlaIII` |
+| `--restrict_fragments` | Restrict pairs to restriction fragments | `true` |
+| `--cool` | Generate cool contact matrix | `true` |
+| `--cool_bin_size` | Bin size for cool file (bp) | `10000` |
+| `--mcool` | Generate multi-resolution mcool | `false` |
+| `--mcool_resolutions` | Resolutions for mcool | `1000,2000,5000,...` |
+| `--pretext` | Generate pretext file for PretextView | `true` |
+
+### Output
+
+| Output | Description |
+|--------|-------------|
+| `bam/` | Annotated BAM with fragment IDs |
+| `pairs/` | 4DN pairs format (restricted or unrestricted) |
+| `cool/` | Cool contact matrix (single resolution) |
+| `mcool/` | Multi-resolution cool (if `--mcool`) |
+| `pretext/` | Pretext format for PretextView visualization |
 
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
