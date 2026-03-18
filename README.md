@@ -13,7 +13,7 @@
 
 ## Introduction
 
-**sanger-tol/tollongc** is a Nextflow pipeline for processing Long-C/Pore-C chromatin conformation capture data from long-read sequencing. It converts raw reads into pairwise genomic contacts and generates contact matrices in multiple formats for downstream analysis and visualization.
+**sanger-tol/tollongc** is a Nextflow pipeline for processing CIFI/Pore-C chromatin conformation capture data from long-read sequencing. It converts raw reads into pairwise genomic contacts and generates contact matrices in multiple formats for downstream analysis and visualization.
 
 The pipeline:
 
