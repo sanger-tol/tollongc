@@ -2,7 +2,9 @@
 // Subworkflow: Long-C alignment (optional digest + minimap2 index + align + annotate fragments)
 //
 
+include { SEQKIT_FX2TAB          } from '../../../modules/nf-core/seqkit/fx2tab/main'
 include { DIGEST_READS            } from '../../../modules/local/digest_reads/main'
+include { SEQKIT_TAB2FX          } from '../../../modules/nf-core/seqkit/tab2fx/main'
 include { CREATE_RESTRICTION_BED  } from '../../../modules/local/create_restriction_bed/main'
 include { MINIMAP2_INDEX          } from '../../../modules/nf-core/minimap2/index/main'
 include { MINIMAP2_ALIGN          } from '../../../modules/nf-core/minimap2/align/main'
@@ -25,12 +27,15 @@ workflow LONGC {
     //
     // Optionally digest reads (split concatemers at restriction sites)
     // When skip_digest=true, align raw reads directly, the output is a BAM file with the original read names
+    // Seqkit runs as separate processes: fx2tab -> digest_reads.py -> tab2fx
     //
     if (params.skip_digest) {
         ch_reads_for_align = longc_reads
     } else {
-        DIGEST_READS ( longc_reads, Channel.of(params.cutter) )
-        ch_reads_for_align = DIGEST_READS.out.digested_reads
+        SEQKIT_FX2TAB ( longc_reads )
+        DIGEST_READS ( SEQKIT_FX2TAB.out.text, Channel.of(params.cutter) )
+        SEQKIT_TAB2FX ( DIGEST_READS.out.digested_tabular )
+        ch_reads_for_align = SEQKIT_TAB2FX.out.fastx
     }
 
     //

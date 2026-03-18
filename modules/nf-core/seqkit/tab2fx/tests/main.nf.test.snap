@@ -1,0 +1,207 @@
+{
+    "fasta - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ],
+                "fastx": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-12T13:13:03.802260199",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "fastq_gz": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,eba9327c1b519fa26a2741fee5f1df0f"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ],
+                "fastx": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,eba9327c1b519fa26a2741fee5f1df0f"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-12T13:12:56.902969147",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "fasta_gz": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,04d45a85c10933605cb5a289552c83a0"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ],
+                "fastx": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,04d45a85c10933605cb5a289552c83a0"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-12T13:12:49.903928838",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "fasta": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,04d45a85c10933605cb5a289552c83a0"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ],
+                "fastx": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,04d45a85c10933605cb5a289552c83a0"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-12T13:12:35.713584471",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "fastq": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,eba9327c1b519fa26a2741fee5f1df0f"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ],
+                "fastx": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fa.zst:md5,eba9327c1b519fa26a2741fee5f1df0f"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_TAB2FX",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-12T13:12:42.988904988",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    }
+}

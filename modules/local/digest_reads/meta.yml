@@ -1,5 +1,5 @@
 name: digest_reads
-description: Digest long-read concatemers into monomers at restriction sites using seqkit.
+description: Digest long-read concatemers into monomers at restriction sites.
 keywords:
   - digest
   - pore-c
@@ -7,23 +7,22 @@ keywords:
   - restriction
   - monomers
 tools:
-  - seqkit:
-      description: Ultrafast FASTA/Q toolkit
-      homepage: https://bioinf.shenwei.me/seqkit/
+  - digest_reads:
+      description: Python script to split concatemers at restriction sites
 input:
   - meta:
       type: map
       description: Sample metadata
-  - reads:
+  - tabular:
       type: file
-      description: Input reads (FASTQ or BAM)
+      description: Tabular format (name, seq, qual) from seqkit fx2tab
   - cutter:
       type: string
       description: Restriction enzyme name (e.g. NlaIII)
 output:
-  digested_reads:
+  digested_tabular:
     - meta:
         type: map
-    - "*.fastq.gz":
+    - "*.tsv.gz":
         type: file
-        description: Digested monomer sequences in FASTQ format
+        description: Digested monomer sequences in tabular format

@@ -44,6 +44,21 @@
                         "branch": "master",
                         "git_sha": "4e3e10e502ec6ab6b1c4b4fecd923ff1fa287338",
                         "installed_by": ["modules"]
+                    },
+                    "seqkit/fx2tab": {
+                        "branch": "master",
+                        "git_sha": "bf70cbf44b42ff4a81afcb673fcef604f5ef3a85",
+                        "installed_by": ["modules"]
+                    },
+                    "seqkit/seq": {
+                        "branch": "master",
+                        "git_sha": "bf70cbf44b42ff4a81afcb673fcef604f5ef3a85",
+                        "installed_by": ["modules"]
+                    },
+                    "seqkit/tab2fx": {
+                        "branch": "master",
+                        "git_sha": "bf70cbf44b42ff4a81afcb673fcef604f5ef3a85",
+                        "installed_by": ["modules"]
                     }
                 }
             },

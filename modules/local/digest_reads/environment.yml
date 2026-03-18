@@ -3,6 +3,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::seqkit>=2.0
-  - bioconda::samtools>=1.15
   - python>=3.9
