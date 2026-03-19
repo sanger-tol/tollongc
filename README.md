@@ -21,16 +21,16 @@ The pipeline:
 - **Aligns** fragments to a reference genome with minimap2
 - **Annotates** fragments and extracts pairwise contacts using pairtools parse2
 - **Optionally restricts** contacts to restriction fragments (pairtools restrict)
-- **Converts** pairs to cool, mcool, and pretext formats for visualization
+- **Converts** pairs to mcool and pretext formats for visualization
 
 ### Pipeline overview
 
-1. **Digest** (optional) — Split concatemers at restriction sites (NlaIII, DpnII, etc.)
+1. **Digest** (optional) — SeqKit fx2tab → digest_reads.py → SeqKit tab2fx: split concatemers at restriction sites (NlaIII, DpnII, etc.)
 2. **Align** — Minimap2 index and alignment
 3. **Annotate** — Group fragments by read, assign fragment IDs
 4. **Parse** — pairtools parse2: BAM → pairs format
 5. **Restrict** (optional) — pairtools restrict: filter to restriction fragments
-6. **Convert** — pairs → cool/mcool (cooler) and pretext (PretextMap)
+6. **Convert** — pairs → mcool (cooler) and pretext (PretextMap)
 
 ## Usage
 
@@ -39,7 +39,13 @@ The pipeline:
 
 ### Input
 
-Prepare a samplesheet with your input data:
+1. **Reference genome** — FASTA file for alignment:
+
+```bash
+--fasta genome.fa.gz
+```
+
+2. **Samplesheet** — CSV with your read data:
 
 `samplesheet.csv`:
 
@@ -59,6 +65,7 @@ SAMPLE2,reads2.fastq.gz,
 nextflow run sanger-tol/tollongc \
    -profile <docker/singularity/conda> \
    --input samplesheet.csv \
+   --fasta genome.fa.gz \
    --outdir <OUTDIR>
 ```
 
@@ -67,6 +74,7 @@ nextflow run sanger-tol/tollongc \
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `--input` | Path to samplesheet CSV | Required |
+| `--fasta` | Path to reference genome FASTA | Required |
 | `--outdir` | Output directory | Required |
 | `--skip_digest` | Skip restriction digest, align raw reads | `false` |
 | `--cutter` | Restriction enzyme (NlaIII, DpnII, HindIII, etc.) | `NlaIII` |
@@ -81,11 +89,10 @@ nextflow run sanger-tol/tollongc \
 
 | Output | Description |
 |--------|-------------|
-| `bam/` | Annotated BAM with fragment IDs |
 | `pairs/` | 4DN pairs format (restricted or unrestricted) |
-| `cool/` | Cool contact matrix (single resolution) |
 | `mcool/` | Multi-resolution cool (if `--mcool`) |
 | `pretext/` | Pretext format for PretextView visualization |
+| `pipeline_info/` | Software versions and pipeline metadata |
 
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).

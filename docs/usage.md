@@ -6,7 +6,17 @@
 
 <!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
 
-## Samplesheet input
+## Input
+
+### Reference genome
+
+Provide the reference genome FASTA file for alignment:
+
+```bash
+--fasta '[path to reference genome FASTA]'
+```
+
+### Samplesheet
 
 You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
 
@@ -55,7 +65,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run sanger-tol/tollongc --input ./samplesheet.csv --outdir ./results  -profile docker
+nextflow run sanger-tol/tollongc --input ./samplesheet.csv --fasta genome.fa.gz --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -86,6 +96,7 @@ with:
 
 ```yaml title="params.yaml"
 input: './samplesheet.csv'
+fasta: './genome.fa.gz'
 outdir: './results/'
 <...>
 ```
