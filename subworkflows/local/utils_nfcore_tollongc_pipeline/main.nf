@@ -32,6 +32,9 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
+    help              // boolean: Display help message and exit
+    help_full         // boolean: Show the full help message
+    show_hidden       // boolean: Show hidden parameters in the help message
 
     main:
 
@@ -85,10 +88,18 @@ workflow PIPELINE_INITIALISATION {
             meta, fastqs ->
                 return [ meta, fastqs.flatten() ]
         }
-        .set { ch_samplesheet }
+        .set { ch_longc_reads }
+
+    //
+    // Create reference channel from params.fasta
+    //
+    ch_reference = params.fasta
+        ? Channel.of([ [ id: 'genome' ], file(params.fasta, checkIfExists: true) ] )
+        : Channel.empty()
 
     emit:
-    samplesheet = ch_samplesheet
+    reference   = ch_reference
+    longc_reads = ch_longc_reads
     versions    = ch_versions
 }
 

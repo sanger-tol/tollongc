@@ -9,7 +9,7 @@ include { CREATE_RESTRICTION_BED  } from '../../../modules/local/create_restrict
 include { MINIMAP2_INDEX          } from '../../../modules/nf-core/minimap2/index/main'
 include { MINIMAP2_ALIGN          } from '../../../modules/nf-core/minimap2/align/main'
 include { ANNOTATE_FRAG           } from '../../../modules/local/annotate_frag/main'
-include { PAIRTOOLS_PARSE2        } from '../../../modules/nf-core/pairtools/parse2/main'
+include { PAIRTOOLS_PARSE        } from '../../../modules/nf-core/pairtools/parse/main'
 include { PAIRTOOLS_RESTRICT      } from '../../../modules/nf-core/pairtools/restrict/main'
 include { SAMTOOLS_FAIDX         } from '../../../modules/local/samtools_faidx/main'
 include { COOLER_CLOAD_PAIRS     } from '../../../modules/local/cooler_cload_pairs/main'
@@ -104,13 +104,16 @@ workflow LONGC {
         PRETEXTMAP ( ch_pairs_final.combine(SAMTOOLS_FAIDX.out.fasta_fai) )
     }
 
+    ch_versions = Channel.empty()
+    ch_versions = ch_versions.mix(PAIRTOOLS_PARSE.out.versions)
+    if (use_restrict) {
+        ch_versions = ch_versions.mix(PAIRTOOLS_RESTRICT.out.versions)
+    }
+
     emit:
-    bam            = ANNOTATE_FRAG.out.bam
-    pairs          = ch_pairs_final
-    cool           = use_cool ? COOLER_CLOAD_PAIRS.out.cool : Channel.empty()
-    mcool          = (params.mcool && params.cool) ? COOLER_ZOOMIFY.out.mcool : Channel.empty()
-    pretext        = params.pretext ? PRETEXTMAP.out.pretext : Channel.empty()
-    versions_minimap2_index = MINIMAP2_INDEX.out.versions_minimap2
-    versions_minimap2_align = MINIMAP2_ALIGN.out.versions_minimap2
+    pairs    = ch_pairs_final
+    mcool    = (params.mcool && params.cool) ? COOLER_ZOOMIFY.out.mcool : Channel.empty()
+    pretext  = params.pretext ? PRETEXTMAP.out.pretext : Channel.empty()
+    versions = ch_versions
 
 }

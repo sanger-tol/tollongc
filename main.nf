@@ -13,9 +13,10 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { TOLLONGC  } from './workflows/tollongc'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_tollongc_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_tollongc_pipeline'
+include { TOLLONGC                  } from './workflows/tollongc'
+include { PIPELINE_INITIALISATION   } from './subworkflows/local/utils_nfcore_tollongc_pipeline'
+include { PIPELINE_COMPLETION       } from './subworkflows/local/utils_nfcore_tollongc_pipeline'
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
@@ -28,7 +29,8 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_toll
 workflow SANGERTOL_TOLLONGC {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    reference   // channel: tuple(meta, path(fasta))
+    longc_reads // channel: tuple(meta, path(reads))
 
     main:
 
@@ -36,9 +38,11 @@ workflow SANGERTOL_TOLLONGC {
     // WORKFLOW: Run pipeline
     //
     TOLLONGC (
-        samplesheet
+        reference,
+        longc_reads
     )
 }
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -57,15 +61,20 @@ workflow {
         params.monochrome_logs,
         args,
         params.outdir,
-        params.input
+        params.input,
+        params.help,
+        params.help_full,
+        params.show_hidden
     )
 
     //
     // WORKFLOW: Run main workflow
     //
     SANGERTOL_TOLLONGC (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.reference,
+        PIPELINE_INITIALISATION.out.longc_reads
     )
+
     //
     // SUBWORKFLOW: Run completion tasks
     //
@@ -75,7 +84,7 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        params.hook_url,
+        params.hook_url
     )
 }
 
